@@ -41,11 +41,25 @@ zip_object.close
 
 """Carregando imagem"""
 
-# imagem = cv2.imread('Material/testes/teste_victor02.jpg')
-imagem = cv2.imread('Material/testes/teste_victor01.jpg')
+imagem = cv2.imread('Material/testes/20200418_174830.jpg')
 cv2_imshow(imagem)
 
 imagem.shape #Resolução da imagem
+
+# largura = imagem.shape[0]
+# altura = imagem.shape[1]
+
+# #Se a imagem for muito grande, reduzir para 400 x 300
+# largura = 400
+# altura = 300
+# dim = (altura, largura)
+
+# #Redimensionando a imagem
+# resized = cv2.resize(imagem, dim, interpolation = cv2.INTER_AREA)
+
+# print('Imagem redimensionada: ', resized.shape)
+
+# cv2_imshow(resized)
 
 """## Testando o detector
 
@@ -61,13 +75,20 @@ expressoes = ["Raiva", "Nojo", "Medo", "Feliz", "Triste", "Surpreso", "Neutro"]
 """**Detecção de faces**"""
 
 original = imagem.copy()
-faces = face_detection.detectMultiScale(original, scaleFactor = 1.2,
+faces = face_detection.detectMultiScale(original, scaleFactor = 1.1,
                                         minNeighbors = 5, minSize = (20,20))
 
-# faces = face_detection.detectMultiScale(imagem, scaleFactor = 1.2,
-#                                         minNeighbors = 5, minSize = (20,20))
-
 faces #Detectando as coordenadas de uma face em uma imagem
+
+#Armazenando as coordenadas de uma face
+fX = faces[0][0]
+fY = faces[0][1]
+fW = faces[0][2] 
+fH = faces[0][3] 
+print(fX)
+print(fY)
+print(fW)
+print(fH)
 
 len(faces)
 
@@ -90,7 +111,7 @@ cinza.shape
 """
 
 #Extração de um ROI com uma única imagem
-roi = cinza[270:270 + 620, 269:269 + 620] #Reduzindo a dimensão da imagem para treinamento rápido da rede neural
+roi = cinza[fY:fY + fH, fX:fX + fW] #Reduzindo a dimensão da imagem para treinamento rápido da rede neural
 # roi = cinza[105:105 + 209, 53:53 + 209] #Reduzindo a dimensão da imagem para treinamento rápido da rede neural
 
 #Extração de ROIs com múltiplas imagens de um arquivo.
@@ -124,6 +145,7 @@ roi = cinza[270:270 + 620, 269:269 + 620] #Reduzindo a dimensão da imagem para 
 #   cv2.rectangle(original, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
 cv2_imshow(original)
+# cv2_imshow(resized)
 
 cv2_imshow(roi)
 
@@ -175,13 +197,13 @@ label
 
 """## Resultados"""
 
-# cv2.putText(original, label, (53, 105 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0,0,255), 2, cv2.LINE_AA)
-# cv2.rectangle(original, (53, 105), (53 + 209, 105 + 209), (0, 0, 255), 2) #Desenhando um retângulo identificador de faces
-# cv2_imshow(original)
-
-cv2.putText(original, label, (269, 270 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0,0,255), 2, cv2.LINE_AA)
-cv2.rectangle(original, (269, 270), (269 + 620, 270 + 620), (0, 0, 255), 2) #Desenhando um retângulo identificador de faces
+cv2.putText(original, label, (fX, fY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.85, (0,0,255), 2, cv2.LINE_AA)
+cv2.rectangle(original, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 2) #Desenhando um retângulo identificador de faces
 cv2_imshow(original)
+
+# cv2.putText(resized, label, (fX, fY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0,0,255), 2, cv2.LINE_AA)
+# cv2.rectangle(resized, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 2) #Desenhando um retângulo identificador de faces
+# cv2_imshow(resized)
 
 probabilidades = np.ones((250, 300, 3), dtype='uint8') * 255
 probabilidades
@@ -190,8 +212,7 @@ probabilidades.shape
 
 cv2_imshow(original)
 if len(faces) == 1:
-  #Exibindo as probabilidades de cada estado emocional em uma imagem
-  for(i, (emotion, prob)) in enumerate(zip(expressoes, preds)):
+  for(i, (emotion, prob)) in enumerate(zip(expressoes, preds)): #Exibindo as probabilidades de cada estado emocional em uma imagem
     # print(i, emotion, prob)
     text = "{}: {:.2f}%".format(emotion, prob * 100)
     width = int(prob * 300)
