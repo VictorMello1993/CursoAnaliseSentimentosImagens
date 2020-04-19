@@ -164,7 +164,7 @@ print('Número de imagens no conjunto de teste:', len(X_test))
 print('Número de imagens no conjunto de validação:', len(X_val)) 
 
 #Porém, há inconsistência na definição das bases de dados. Durante o treinamento, será corrigida esta inconsistência
-#A cada final de cada época de treinamento de uma rede neural, será realizado um teste utilizando a base de dados de validação
+#No final de cada época de treinamento de uma rede neural, será realizado um teste utilizando a base de dados de validação
 
 #Salvando a base de testes a ser utlizada posteriormente para geração da matriz de confusão
 np.save('mod_xtest', X_test)
@@ -402,6 +402,13 @@ expressoes = ['Raiva', 'Nojo', 'Medo', 'Feliz', 'Triste', 'Surpreso', 'Neutro']
 titulo = 'Matriz de confusão'
 print(cm) #Obtendo a matriz de confusão
 
+# Percorrendo a matriz de confusão para obter o total de registros na base de testes
+soma = 0
+for i in range(len(cm)):
+  for j in range(len(cm[i])):
+    soma += cm[i][j]
+print(soma)
+
 import itertools
 plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
 plt.title(titulo)
@@ -425,7 +432,7 @@ print(thresh)
 
 """### Testando o modelo"""
 
-imagem = cv2.imread('Material/testes/teste01.png')
+imagem = cv2.imread('Material/testes/teste_victor_02.jpg')
 cv2_imshow(imagem)
 
 original = imagem.copy()
