@@ -270,7 +270,12 @@ history = model.fit(np.array(x_train), np.array(y_train),
           callbacks=[lr_reducer, early_stopper, checkpointer])
 
 """* Tempo de treinamento com a arquitetura 2:
-  *   4 min em 16 épocas em média
+  *   Treinamento 1: 4 min em 16 épocas
+  *   Treinamento 2: 4 min em 17 épocas
+  *   Treinamento 3: 2 min em 9 épocas
+  *   Treinamento 4: 2 min em 10 épocas
+  *   Treinamento 5: 4 min em 17 épocas
+  *   Treinamento 5: 8 min em 19 épocas (recorde: 66% na base de validação e 65% na base de testes)
 
 ## Gerando gráfico da melhora em cada etapa do treinamento
 """
@@ -301,7 +306,7 @@ def plota_historico_modelo(historico_modelo):
     axs[1].set_xticks(np.arange(1,len(historico_modelo.history['loss'])+1),
                       len(historico_modelo.history['loss'])/10)
     axs[1].legend(['training loss', 'validation Loss'], loc='best')
-    fig.savefig('historico_modelo_mod01.png') #Salvando os gráficos em um arquivo png
+    fig.savefig('historico_modelo_mod02.png') #Salvando os gráficos em um arquivo png
     plt.show()
 
 plota_historico_modelo(history)
@@ -370,7 +375,7 @@ for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
 
 plt.ylabel('Classificação Correta')
 plt.xlabel('Predição')
-plt.savefig('matriz_confusao_mod01.png') #Salvando a matriz de confusão localmente em uma imagem .png
+plt.savefig('matriz_confusao_mod02.png') #Salvando a matriz de confusão localmente em uma imagem .png
 plt.show()
 
 """## Testando brevemente o modelo"""
@@ -387,11 +392,11 @@ expressoes = ["Raiva", "Nojo", "Medo", "Feliz", "Triste", "Surpreso", "Neutro"]
 original = imagem.copy()
 gray = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
 face_cascade = cv2.CascadeClassifier('Material/haarcascade_frontalface_default.xml')
-faces = face_cascade.detectMultiScale(gray, 1.1, 3)
+faces = face_cascade.detectMultiScale(gray, 1.2, 3, minSize = (20, 20))
 
 #Desenhando balding boxes em cada imagem da face
 for (x, y, w, h) in faces:
-    cv2.rectangle(original, (x, y), (x + w, y + h), (0, 255, 0), 1)
+    cv2.rectangle(original, (x, y), (x + w, y + h), (0, 255, 0), 2)
     roi_gray = gray[y:y + h, x:x + w]
     roi_gray = roi_gray.astype("float") / 255.0
     cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
@@ -401,3 +406,15 @@ for (x, y, w, h) in faces:
     cv2.putText(original, expressoes[int(np.argmax(prediction))], (x, y - 10), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 1, cv2.LINE_AA)
 cv2_imshow(original)
+
+#Mostra o gráfico (barras) apenas se detectou uma face
+if len(faces) == 1:
+  for(i, (emotion, prob)) in enumerate(zip(expressoes, prediction)):    
+    text = '{}: {:.2f}%'.format(emotion, prob * 100) #Nome das emoções x probabilidade
+    width = int(prob * 300)
+    cv2.rectangle(probabilidades, (7, (i * 35) + 5), (width, (i * 35) + 35), (200, 250, 20), -1)
+    cv2.putText(probabilidades, text, (10, (i*35)+23),cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0,0,0), 1, cv2.LINE_AA)
+
+  cv2_imshow(probabilidades)
+cv2.imwrite('captura.jpg', original)
+cv2.destroyAllWindows()
