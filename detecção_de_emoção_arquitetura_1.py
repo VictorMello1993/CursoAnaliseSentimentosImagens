@@ -432,7 +432,7 @@ print(thresh)
 
 """### Testando o modelo"""
 
-imagem = cv2.imread('Material/testes/teste_victor_02.jpg')
+imagem = cv2.imread('Material/testes/shutterstock_110076917.jpg')
 cv2_imshow(imagem)
 
 original = imagem.copy()
@@ -440,17 +440,31 @@ gray = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
 cv2_imshow(gray)
 
 face_cascade = cv2.CascadeClassifier('Material/haarcascade_frontalface_default.xml')
-faces = face_cascade.detectMultiScale(gray, 1.1, 3)
+faces = face_cascade.detectMultiScale(gray, 1.3, 3)
 
 faces
 
 #Desenhando balding boxes em cada imagem da face
 for(x, y, w, h) in faces:
-  cv2.rectangle(original, (x, y), (x + w, y + h), (0, 255, 0), 1)
+  cv2.rectangle(original, (x, y), (x + w, y + h), (0, 0, 255), 2)
   roi_gray = gray[y:y + h, x:x + w]
   roi_gray = roi_gray.astype('float') / 255.0
   cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
   prediction = loaded_model.predict(cropped_img)[0]
   cv2.putText(original, expressoes[int(np.argmax(prediction))], (x, y - 10),
-              cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2, cv2.LINE_AA)
+              cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 255), 2, cv2.LINE_AA)
 cv2_imshow(original)
+
+probabilidades = np.ones((250,300,3), dtype='uint8') * 255
+
+#Mostra o gráfico (barras) apenas se detectou uma face
+if len(faces) == 1:
+  for(i, (emotion, prob)) in enumerate(zip(expressoes, prediction)):    
+    text = '{}: {:.2f}%'.format(emotion, prob * 100) #Nome das emoções x probabilidade
+    width = int(prob * 300)
+    cv2.rectangle(probabilidades, (7, (i * 35) + 5), (width, (i * 35) + 35), (200, 250, 20), -1)
+    cv2.putText(probabilidades, text, (10, (i*35)+23),cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0,0,0), 1, cv2.LINE_AA)
+
+  cv2_imshow(probabilidades)
+cv2.imwrite('captura.jpg', original)
+cv2.destroyAllWindows()
