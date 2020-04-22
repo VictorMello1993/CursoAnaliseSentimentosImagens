@@ -11,6 +11,4 @@ zip_object.extractall("./")
 ```
 O zip deve ficar na raíz do seu Google Drive (pasta Meu Drive).
 
-OBS: eu não fechei o zip_object porque tive que descompactar um outro zip.
-
 Arquivo zipado: https://drive.google.com/file/d/1ZS3ya18nHgOWOvLSRP0uRchz8YMM-hc2/view?usp=sharing
