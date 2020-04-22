@@ -9,9 +9,8 @@ path = "/content/drive/My Drive/Material.zip"
 zip_object = zipfile.ZipFile(file=path, mode="r")
 zip_object.extractall("./")
 ```
+O zip deve ficar na raíz do seu Google Drive (pasta Meu Drive).
 
 OBS: eu não fechei o zip_object porque tive que descompactar um outro zip.
-
-O zip deve ficar na raíz do seu Google Drive (pasta Meu Drive).
 
 Arquivo zipado: https://drive.google.com/file/d/1ZS3ya18nHgOWOvLSRP0uRchz8YMM-hc2/view?usp=sharing
