@@ -1,7 +1,7 @@
 # CursoReconhecimentoEmocoes
 Repositório contendo scripts responsáveis pela detecção de emoções com a visão computacional e Machine Learning, aprendidos em um curso da plataforma Udemy com professores Jones Granatyr e Gabriel Alves, utilizando a biblioteca TensorFlow para treinamento de redes neurais convolucionais (CNN). 
 
-Os scripts foram desenvolvidos no Google Colab. Para testá-los, é preciso descompactar o arquivo zipado Material.zip através da linha abaixo:
+Os scripts foram implementados no Google Colab. Para testá-los, é preciso descompactar o arquivo zipado Material.zip através da linha abaixo:
 ```
 from google.colab import drive
 drive.mount('/content/drive', force_remount=True)
