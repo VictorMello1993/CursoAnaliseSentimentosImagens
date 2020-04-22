@@ -3,11 +3,11 @@ Repositório contendo scripts responsáveis pela detecção de emoções com a v
 
 Os scripts foram testados no Google Colab. Para testá-los, é preciso descompactar o arquivo zipado Material.zip através da linha abaixo:
 
-`from google.colab import drive
-drive.mount('/content/drive', force_remount=True)
-path = "/content/drive/My Drive/Material.zip"
-zip_object = zipfile.ZipFile(file=path, mode="r")
-zip_object.extractall("./")`
+`from google.colab import drive`
+`drive.mount('/content/drive', force_remount=True)`
+`path = "/content/drive/My Drive/Material.zip"`
+`zip_object = zipfile.ZipFile(file=path, mode="r")`
+`zip_object.extractall("./")`
 
 O zip deve ficar na raíz do seu Google Drive (pasta Meu Drive).
 
