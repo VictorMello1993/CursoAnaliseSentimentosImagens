@@ -7,8 +7,7 @@ Os scripts foram testados no Google Colab. Para testá-los, é preciso descompac
 drive.mount('/content/drive', force_remount=True)
 path = "/content/drive/My Drive/Material.zip"
 zip_object = zipfile.ZipFile(file=path, mode="r")
-zip_object.extractall("./")
-`
+zip_object.extractall("./")`
 
 O zip deve ficar na raíz do seu Google Drive (pasta Meu Drive).
 
