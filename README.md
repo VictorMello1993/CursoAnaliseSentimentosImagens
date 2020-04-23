@@ -2,7 +2,7 @@
 Repositório contendo scripts responsáveis pela detecção de emoções com a visão computacional e Machine Learning, aprendidos em um curso da plataforma Udemy com professores Jones Granatyr e Gabriel Alves, utilizando a biblioteca TensorFlow para treinamento de redes neurais convolucionais (CNN). 
 
 Os scripts foram implementados no Google Colab. Para testá-los, é preciso descompactar o arquivo zipado Material.zip através da linha abaixo:
-```
+```Python
 from google.colab import drive
 drive.mount('/content/drive', force_remount=True)
 path = "/content/drive/My Drive/Material.zip"
