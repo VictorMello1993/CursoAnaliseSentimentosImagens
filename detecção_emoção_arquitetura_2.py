@@ -247,8 +247,8 @@ print(model.summary())
 model.compile(loss=categorical_crossentropy,
               optimizer=Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-7),
               metrics=['accuracy'])
-arquivo_modelo = "modelo_02_expressoes.h5" # arquivo do modelo
-arquivo_modelo_json = "modelo_02_expressoes.json" # arquivo JSON
+arquivo_modelo = 'modelo_02_expressoes.h5'
+arquivo_modelo_json = 'modelo_02_expressoes.json'
 lr_reducer = ReduceLROnPlateau(monitor='val_loss', factor=0.9, patience=3, verbose=1)
 early_stopper = EarlyStopping(monitor='val_loss', min_delta=0, patience=8, verbose=1, mode='auto')
 checkpointer = ModelCheckpoint(arquivo_modelo, monitor='val_loss', verbose=1, save_best_only=True)
@@ -380,7 +380,7 @@ plt.show()
 
 """## Testando brevemente o modelo"""
 
-imagem = cv2.imread("Material/testes/teste02.jpg")
+imagem = cv2.imread("Material/testes/20200418_171635.jpg")
 cv2_imshow(imagem)
 
 model = load_model("modelo_02_expressoes.h5")
@@ -396,7 +396,7 @@ faces = face_cascade.detectMultiScale(gray, 1.2, 3, minSize = (20, 20))
 
 #Desenhando balding boxes em cada imagem da face
 for (x, y, w, h) in faces:
-    cv2.rectangle(original, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    cv2.rectangle(original, (x, y), (x + w, y + h), (0, 0, 255), 2)
     roi_gray = gray[y:y + h, x:x + w]
     roi_gray = roi_gray.astype("float") / 255.0
     cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
@@ -404,8 +404,10 @@ for (x, y, w, h) in faces:
                   norm_type=cv2.NORM_L2, dtype=cv2.CV_32F)
     prediction = model.predict(cropped_img)[0]
     cv2.putText(original, expressoes[int(np.argmax(prediction))], (x, y - 10), 
-                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 1, cv2.LINE_AA)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.95, (0, 0, 255), 2, cv2.LINE_AA)
 cv2_imshow(original)
+
+probabilidades = np.ones((250,300,3), dtype='uint8') * 255
 
 #Mostra o gráfico (barras) apenas se detectou uma face
 if len(faces) == 1:
@@ -416,5 +418,15 @@ if len(faces) == 1:
     cv2.putText(probabilidades, text, (10, (i*35)+23),cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0,0,0), 1, cv2.LINE_AA)
 
   cv2_imshow(probabilidades)
-cv2.imwrite('captura.jpg', original)
+
+  #Redimensionando a imagem original e a de probabilidades para as dimensões definidas
+  original_resize = cv2.resize(imagem, (300, 400))
+  probs_resize = cv2.resize(probabilidades, (300,400))
+
+  combined_img = np.hstack((original_resize, probs_resize)) #Combinando a imagem original com a de probabilidades em uma única imagem  
+  cv2.imwrite('captura01.jpg', combined_img)  
+
+cv2.imwrite('captura02.jpg', original)
 cv2.destroyAllWindows()
+
+probabilidades.shape

@@ -465,6 +465,13 @@ if len(faces) == 1:
     cv2.rectangle(probabilidades, (7, (i * 35) + 5), (width, (i * 35) + 35), (200, 250, 20), -1)
     cv2.putText(probabilidades, text, (10, (i*35)+23),cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0,0,0), 1, cv2.LINE_AA)
 
+  #Redimensionando a imagem original e a de probabilidades para as dimensões definidas
+  original_resize = cv2.resize(imagem, (300, 400))
+  probs_resize = cv2.resize(probabilidades, (300,400))
+
+  combined_img = np.hstack((original_resize, probs_resize)) #Combinando a imagem original com a de probabilidades em uma única imagem  
+  cv2.imwrite('captura01.jpg', combined_img)  
   cv2_imshow(probabilidades)
+
 cv2.imwrite('captura.jpg', original)
 cv2.destroyAllWindows()
