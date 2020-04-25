@@ -13,7 +13,7 @@ O zip deve ficar na raíz do seu Google Drive (pasta Meu Drive).
 
 Arquivo zipado: https://drive.google.com/file/d/1ZS3ya18nHgOWOvLSRP0uRchz8YMM-hc2/view?usp=sharing
 
-Base de dados utilizada: FER2013.csv
+Base de dados utilizada: FER2013.csv https://www.kaggle.com/nicolejyt/facialexpressionrecognition#fer2013.csv
 
 Recursos:
 * OpenCV
