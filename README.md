@@ -15,6 +15,12 @@ Arquivo zipado: https://drive.google.com/file/d/1ZS3ya18nHgOWOvLSRP0uRchz8YMM-hc
 
 Base de dados utilizada: FER2013.csv https://www.kaggle.com/nicolejyt/facialexpressionrecognition#fer2013.csv
 
+Google Colab:
+* https://colab.research.google.com/drive/1DpgZKs6u9_4mP9PXRax82DzLrZQ-VWep
+* https://colab.research.google.com/drive/19YsV2n4lrMF05bdkHBz8eGZcrI6mSYsl
+* https://colab.research.google.com/drive/1fAG8P4UsLGUItOAHNj22noY5Q8qh6iFt
+* https://colab.research.google.com/drive/15Y0cIQ5_bDEuaeOJ-S2e2fJIVubFMMFO
+
 Recursos:
 * OpenCV
 * TensorFlow
