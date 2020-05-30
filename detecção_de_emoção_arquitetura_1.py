@@ -315,7 +315,7 @@ def plota_historico_modelo(historico_modelo):
   axs[0].plot(range(1, len(historico_modelo.history['accuracy']) + 1), list(perc_accuracy), 'r')
   axs[0].plot(range(1, len(historico_modelo.history['val_accuracy']) + 1), list(perc_val_accuracy), 'b')
   axs[0].set_title('Acurácia do modelo')
-  axs[0].set_ylabel('Acurácia')
+  axs[0].set_ylabel('Acurácia (%)')
   axs[0].set_xlabel('Epoch')
   axs[0].set_xticks(np.arange(1, len(historico_modelo.history['accuracy']) + 1),
                      len(historico_modelo.history['accuracy']) / 10)
@@ -435,7 +435,7 @@ print(thresh)
 
 """### Testando o modelo"""
 
-imagem = cv2.imread('Material/testes/teste_victo_01.jpg')
+imagem = cv2.imread('Material/testes/teste_victo_02.jpg')
 cv2_imshow(imagem)
 
 original = imagem.copy()
