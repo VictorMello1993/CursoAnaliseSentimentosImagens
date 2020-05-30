@@ -308,9 +308,12 @@ print(history.history)
 def plota_historico_modelo(historico_modelo):
   fig, axs = plt.subplots(1, 2, figsize=(15, 5))
 
+  perc_accuracy = (round(element * 100, 2) for element in historico_modelo.history['accuracy'])
+  perc_val_accuracy = (round(element * 100, 2) for element in historico_modelo.history['val_accuracy'])
+
 #Gráfico de acurácia 
-  axs[0].plot(range(1, len(historico_modelo.history['accuracy']) + 1), historico_modelo.history['accuracy'], 'r')
-  axs[0].plot(range(1, len(historico_modelo.history['val_accuracy']) + 1), historico_modelo.history['val_accuracy'], 'b')
+  axs[0].plot(range(1, len(historico_modelo.history['accuracy']) + 1), list(perc_accuracy), 'r')
+  axs[0].plot(range(1, len(historico_modelo.history['val_accuracy']) + 1), list(perc_val_accuracy), 'b')
   axs[0].set_title('Acurácia do modelo')
   axs[0].set_ylabel('Acurácia')
   axs[0].set_xlabel('Epoch')
@@ -432,7 +435,7 @@ print(thresh)
 
 """### Testando o modelo"""
 
-imagem = cv2.imread('Material/testes/shutterstock_110076917.jpg')
+imagem = cv2.imread('Material/testes/teste_victo_01.jpg')
 cv2_imshow(imagem)
 
 original = imagem.copy()
@@ -440,7 +443,7 @@ gray = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
 cv2_imshow(gray)
 
 face_cascade = cv2.CascadeClassifier('Material/haarcascade_frontalface_default.xml')
-faces = face_cascade.detectMultiScale(gray, 1.3, 3)
+faces = face_cascade.detectMultiScale(gray, 1.4, 3, minSize = (20, 20))
 
 faces
 
@@ -465,13 +468,12 @@ if len(faces) == 1:
     cv2.rectangle(probabilidades, (7, (i * 35) + 5), (width, (i * 35) + 35), (200, 250, 20), -1)
     cv2.putText(probabilidades, text, (10, (i*35)+23),cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0,0,0), 1, cv2.LINE_AA)
 
-  #Redimensionando a imagem original e a de probabilidades para as dimensões definidas
+#Redimensionando a imagem original e a de probabilidades para as dimensões definidas
   original_resize = cv2.resize(imagem, (300, 400))
   probs_resize = cv2.resize(probabilidades, (300,400))
 
   combined_img = np.hstack((original_resize, probs_resize)) #Combinando a imagem original com a de probabilidades em uma única imagem  
   cv2.imwrite('captura01.jpg', combined_img)  
   cv2_imshow(probabilidades)
-
 cv2.imwrite('captura.jpg', original)
 cv2.destroyAllWindows()

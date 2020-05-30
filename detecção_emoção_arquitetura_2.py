@@ -283,16 +283,18 @@ history = model.fit(np.array(x_train), np.array(y_train),
 def plota_historico_modelo(historico_modelo):
     fig, axs = plt.subplots(1,2,figsize=(15,5))
 
+    perc_accuracy = (round(element * 100, 2) for element in historico_modelo.history['accuracy'])
+    perc_val_accuracy = (round(element * 100, 2) for element in historico_modelo.history['val_accuracy'])   
+
     #Gráfico de acurácia
-    axs[0].plot(range(1,len(historico_modelo.history['accuracy'])+1),
-                historico_modelo.history['accuracy'],'r')
-    axs[0].plot(range(1,len(historico_modelo.history['val_accuracy'])+1),
-                historico_modelo.history['val_accuracy'],'b')
+    axs[0].plot(range(1,len(historico_modelo.history['accuracy'])+1), list(perc_accuracy),'r')
+    axs[0].plot(range(1,len(historico_modelo.history['val_accuracy'])+1), list(perc_val_accuracy), 'b')
     axs[0].set_title('Acurácia do Modelo')
-    axs[0].set_ylabel('Acuracia')
+    axs[0].set_ylabel('Acurácia (%)')
     axs[0].set_xlabel('Epoch')
     axs[0].set_xticks(np.arange(1,len(historico_modelo.history['accuracy'])+1),
                       len(historico_modelo.history['accuracy'])/10)
+    
     axs[0].legend(['training accuracy', 'validation accuracy'], loc='best')
 
     #Gráfico de erros
